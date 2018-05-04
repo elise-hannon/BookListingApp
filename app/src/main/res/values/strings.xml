@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Search Google Books</string>
+    <string name="search_hint">Keyword Search</string>
+    <string name="search_button">Start Reading</string>
+    <string name="results">Results</string>
+    <string name="no_data">No results found. Please try again.</string>
+    <string name="no_connection">It looks like you\'re not connected to the internet. Check your internet connection and try again.</string>
+</resources>
