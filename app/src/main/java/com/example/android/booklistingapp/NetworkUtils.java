@@ -3,12 +3,7 @@ package com.example.android.booklistingapp;
 import android.util.Log;
 import com.example.android.booklistingapp.models.BookResponse;
 import com.example.android.booklistingapp.models.BookResponseItem;
-import com.example.android.booklistingapp.models.ImageLinks;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
