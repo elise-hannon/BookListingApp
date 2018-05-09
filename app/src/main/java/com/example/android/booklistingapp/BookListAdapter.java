@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
+
 public class BookListAdapter extends ArrayAdapter<Book> {
 
     public BookListAdapter(Activity context, List<Book> bookList) {
@@ -41,7 +42,8 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             imageView.setVisibility(View.VISIBLE);
             Picasso.with(imageView.getContext()).load(currentItem.getImageUrl()).into(imageView);
         } else {
-            imageView.setVisibility(View.GONE);
+            imageView.setVisibility(View.VISIBLE);
+            Picasso.with(imageView.getContext()).load(R.drawable.icon_picture_unavailable).fit().into(imageView);
         }
         return listItemView;
     }
