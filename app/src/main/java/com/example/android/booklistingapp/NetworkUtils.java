@@ -1,9 +1,9 @@
 package com.example.android.booklistingapp;
 
 import android.util.Log;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.android.booklistingapp.models.BookResponse;
+import com.example.android.booklistingapp.models.BookResponseItem;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -98,39 +98,25 @@ class NetworkUtils {
         if (googleBooksJSON == null || googleBooksJSON.equals("")) {
             return null;
         }
+        Gson gson = new Gson();
+        BookResponse bookResponse = gson.fromJson(googleBooksJSON, BookResponse.class);
         List<Book> books = new ArrayList<>();
 
-        try {
-            JSONObject baseJsonResponse = new JSONObject(googleBooksJSON);
-            JSONArray bookArray = baseJsonResponse.getJSONArray("items");
+        for (BookResponseItem item : bookResponse.getItems()) {
+            List<String> authorList = item.getVolumeInfo().getAuthors();
 
-            for (int i = 0; i < bookArray.length(); i++) {
-                JSONObject currentBook = bookArray.getJSONObject(i);
-                JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
-                JSONObject volumeImageLinks = volumeInfo.optJSONObject("imageLinks");
-
-                String title = volumeInfo.optString("title");
-                JSONArray authors = volumeInfo.optJSONArray("authors");
-                List<String> authorList = new ArrayList<>();
-
-                if (authors != null) {
-                    for (int j = 0; j < authors.length(); j++) {
-                        authorList.add(authors.optString(j));
-                    }
-                } else {
-                    authorList.add("unknown");
-                }
-                String description = volumeInfo.optString("description");
-                String imageUrl = null;
-                if (volumeImageLinks != null) {
-                    imageUrl = volumeImageLinks.optString("smallThumbnail");
-                }
-                books.add(new Book(title, authorList, description, imageUrl));
+            if (authorList == null) {
+                authorList = new ArrayList<String>();
+                authorList.add("unknown");
             }
-
-        } catch (JSONException e) {
-            Log.e("NetworkUtils", "Problem parsing the JSON results", e);
+            String imageUrl = null;
+            if (item.getVolumeInfo().getImageLinks() != null) {
+                imageUrl = item.getVolumeInfo().getImageLinks().getSmallThumbnail();
+            }
+            books.add(new Book(item.getVolumeInfo().getTitle(), authorList, item.getVolumeInfo().getDescription(),
+                               imageUrl));
         }
+
         return books;
     }
 }
